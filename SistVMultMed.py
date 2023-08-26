@@ -134,54 +134,33 @@ class sistemaV:
         self.__lista_felinos = {}
        
     def verificarExiste(self,historia):
-        mascota = validar_letras("Ingrese si es felino o canino: ")
-        if mascota == "felino":
-            m = validar_enteros("Ingrese la historia de la mascota: ")
-            for m in self.__lista_felinos:
-                if historia == m.verHistoria():
-                    return True
+        for m in self.__lista_felinos:
+            if historia == m.verHistoria():
+                return True
             #solo luego de haber recorrido todo el ciclo se retorna False
-            return False
-        
-        elif mascota == "canino":
-            m = validar_enteros("Ingrese la historia de la mascota: ")
-            for m in self.__lista_caninos:
-                if historia == m.verHistoria():
-                    return True
+        for m in self.__lista_caninos:
+            if historia == m.verHistoria():
+                return True
             #solo luego de haber recorrido todo el ciclo se retorna False
-            return False
+        return False
         
-        else: 
-            print("---------------------------")
-            print("Ingresó una opción inválida") 
-            print("---------------------------")
-    
+
     def verNumeroMascotas(self):
-        mascota = validar_letras("Ingrese si es felino o canino: ")
         cantidad_de_felinos = 0
         cantidad_de_caninos = 0
         
-        if mascota == "felino":
-            cantidad_de_felinos = len(self.__lista_felinos)
-            
-        elif mascota == "canino":
-            cantidad_de_caninos = len(self.__lista_caninos)
-            
-        else:
-            print("---------------------------")
-            print("Ingresó una opción inválida") 
-            print("---------------------------")
+        cantidad_de_felinos = len(self.__lista_felinos)
+        cantidad_de_caninos = len(self.__lista_caninos)
         
         a = cantidad_de_caninos + cantidad_de_felinos
         return a 
     
     def ingresarMascota(self,mascota, historia):
-        masco = validar_letras("Ingrese si es felino o canino: ")
         
-        if masco == "felino":
+        if mascota.verTipo() == "felino":
             self.__lista_felinos[historia] = mascota
             
-        elif masco == "canino":
+        elif mascota.verTipo() == "canino":
             self.__lista_caninos[historia] = mascota
             
         else: 
@@ -189,70 +168,45 @@ class sistemaV:
             print("Ingresó una opción inválida") 
             print("---------------------------")
             
-    def verFechaIngreso(self,historia):
-        #busco la mascota y devuelvo el atributo solicitado
-        masc = validar_letras("Ingrese si es felino o canino: ")
-        
-        if masc == "felino":
-            for masc in self.__lista_felinos:
-                if historia == masc.verHistoria():
-                    return masc.verFecha() 
-        
-        elif masc == "canino":
-            for masc in self.__lista_caninos:
-                if historia == masc.verHistoria():
-                    return masc.verFecha()
-                
-        else: 
-            print("---------------------------")
-            print("Ingresó una opción inválida") 
-            print("---------------------------")
-            
-        return None
-            
-    def verMedicamento(self,historia):
-        #busco la mascota y devuelvo el atributo solicitado
-        masc = validar_letras("Ingrese si es felino o canino: ")
-            
-        if masc == "felino":
-            for masc in self.__lista_felinos:    
-                if historia == masc.verHistoria():
-                    return masc.verLista_Medicamentos() 
-                
-        elif masc == "canino": 
-            for masc in self.__lista_caninos:
-                if historia == masc.verHistoria():
-                    return masc.verLista_Medicamentos()
-                
-        else: 
-            print("---------------------------")
-            print("Ingresó una opción inválida") 
-            print("---------------------------")
-            
-        return None
+    def verFechaIngreso(self, historia):
+        for mascota_actual in self.__lista_felinos:
+            if historia == mascota_actual:
+                return self.__lista_felinos[mascota_actual].verFecha()
     
+        for mascota_actual in self.__lista_caninos:
+            if historia == mascota_actual:
+                return self.__lista_caninos[mascota_actual].verFecha()
+    
+        return None
+            
+    def verMedicamento(self, historia):
+        for mascota_actual in self.__lista_felinos:
+            if historia == mascota_actual:
+                return self.__lista_felinos[mascota_actual].verLista_Medicamentos()
+
+        for mascota_actual in self.__lista_caninos:
+            if historia == mascota_actual:
+                return self.__lista_caninos[mascota_actual].verLista_Medicamentos()
+    
+        return None
+
     def eliminarMascota(self, historia):
-        masc = validar_letras("Ingrese si es felino o canino: ")
-        
-        if masc == "felino":
-            for masc in self.__lista_felinos:
-                if historia == masc.verHistoria():
-                    valor_d = self.__lista_felinos.pop(historia, "No encontrado")  #opcion con el pop
+        for mascota_actual in self.__lista_felinos:
+            if historia == mascota_actual:
+                valor_d = self.__lista_felinos[mascota_actual].pop(historia)  #opcion con el pop
                 return valor_d  #eliminado con exito
             
-        elif masc == "caninos":
-            for masc in self.__lista_caninos:
-                if historia == masc.verHistoria():
-                    valor_d = self.__lista_caninos.pop(historia, "No encontrado")
+            else:
+                return "No encontrado"
+            
+        for mascota_actual in self.__lista_caninos:
+            if historia == mascota_actual:
+                valor_d = self.__lista_caninos[mascota_actual].pop(historia)
                 return valor_d
             
-        else:
-            print("---------------------------")
-            print("Ingresó una opción inválida")
-            print("---------------------------")
+            else:
+                return "No encontrado"
                     
-        return False 
-    
     def eliminarMedicamento(self, historia):
         pass
         
@@ -315,8 +269,8 @@ def main():
 
         elif menu == 2: # Ver fecha de ingreso
             
-            q = validar_enteros("Ingrese la historia clínica de la mascota: ")
-            fecha = servicio_hospitalario.verFechaIngreso(q)
+            historia = validar_enteros("Ingrese la historia clínica de la mascota: ")
+            fecha = servicio_hospitalario.verFechaIngreso(historia)
             # if servicio_hospitalario.verificarExiste == True
             if fecha != None:
                 print("----------------------------------------------")
@@ -337,8 +291,8 @@ def main():
             
         elif menu == 4: # Ver medicamentos que se están administrando
             
-            q = validar_enteros("Ingrese la historia clínica de la mascota: ")
-            medicamento = servicio_hospitalario.verMedicamento(q) 
+            historia = validar_enteros("Ingrese la historia clínica de la mascota: ")
+            medicamento = servicio_hospitalario.verMedicamento(historia) 
             
             if medicamento != None: 
                 print("------------------------------------")
@@ -357,8 +311,8 @@ def main():
         
         elif menu == 5: # Eliminar mascota
            
-            q = validar_enteros("Ingrese la historia clínica de la mascota: ")
-            resultado_operacion = servicio_hospitalario.eliminarMascota(q) 
+            historia = validar_enteros("Ingrese la historia clínica de la mascota: ")
+            resultado_operacion = servicio_hospitalario.eliminarMascota(historia) 
             if resultado_operacion == True:
                 print("---------------------------------------")
                 print("Mascota eliminada del sistema con exito")
