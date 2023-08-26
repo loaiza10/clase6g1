@@ -50,19 +50,50 @@ class Mascota:
         self.__lista_medicamentos = n 
     
 class sistemaV:
+ 
     def __init__(self):
         self.__lista_caninos = {}
-        self.__lista_caninos = {}
+        self.__lista_felinos = {}
     
     def verificarExiste(self,historia):
-        for m in self.__lista_mascotas:
-            if historia == m.verHistoria():
-                return True
-        #solo luego de haber recorrido todo el ciclo se retorna False
-        return False
+        mascota = input("Ingrese si es felino o canino: ")
+        if mascota == "felino":
+            m = int(input("Ingrese la historia de la mascota: "))
+            for m in self.__lista_felinos:
+                if historia == m.verHistoria():
+                    return True
+            #solo luego de haber recorrido todo el ciclo se retorna False
+            return False
         
+        elif mascota == "canino":
+            m = int(input("Ingrese la historia de la mascota: "))
+            for m in self.__lista_caninos:
+                if historia == m.verHistoria():
+                    return True
+            #solo luego de haber recorrido todo el ciclo se retorna False
+            return False
+        
+        else: 
+            print("---------------------------")
+            print("Ingresó una opción inválida") 
+            print("---------------------------")
+    
     def verNumeroMascotas(self):
-        return len(self.__lista_mascotas) 
+        mascota = input("Ingrese si es felino o canino: ")
+        
+        if mascota == "felino":
+            cantidad_de_feninos = len(self.__lista_caninos)
+            
+        elif mascota == "canino":
+            cantidad_de_caninos = len(self.__lista_caninos)
+            
+        else:
+            print("---------------------------")
+            print("Ingresó una opción inválida") 
+            print("---------------------------")
+        
+        a = cantidad_de_caninos + cantidad_de_feninos
+        return a 
     
     def ingresarMascota(self,mascota):
         self.__lista_mascotas.append(mascota) 
