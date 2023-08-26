@@ -95,29 +95,82 @@ class sistemaV:
         a = cantidad_de_caninos + cantidad_de_feninos
         return a 
     
-    def ingresarMascota(self,mascota):
-        self.__lista_mascotas.append(mascota) 
-   
-
+    def ingresarMascota(self,mascota, historia):
+        masco = input("Ingrese si es felino o canino: ")
+        
+        if masco == "felino":
+            self.__lista_felinos[historia] = mascota
+            
+        elif masco == "canino":
+            self.__lista_caninos[historia] = mascota
+            
+        else: 
+            print("---------------------------")
+            print("Ingresó una opción inválida") 
+            print("---------------------------")
+            
     def verFechaIngreso(self,historia):
         #busco la mascota y devuelvo el atributo solicitado
-        for masc in self.__lista_mascotas:
-            if historia == masc.verHistoria():
-                return masc.verFecha() 
+        masc = input("Ingrese si es felino o canino: ")
+        
+        if masc == "felino":
+            for masc in self.__lista_felinos:
+                if historia == masc.verHistoria():
+                    return masc.verFecha() 
+        
+        elif masc == "canino":
+            for masc in self.__lista_caninos:
+                if historia == masc.verHistoria():
+                    return masc.verFecha()
+                
+        else: 
+            print("---------------------------")
+            print("Ingresó una opción inválida") 
+            print("---------------------------")
+            
         return None
-
+            
     def verMedicamento(self,historia):
         #busco la mascota y devuelvo el atributo solicitado
-        for masc in self.__lista_mascotas:
-            if historia == masc.verHistoria():
-                return masc.verLista_Medicamentos() 
+        masc = input("Ingrese si es felino o canino: ")
+            
+        if masc == "felino":
+            for masc in self.__lista_felinos:    
+                if historia == masc.verHistoria():
+                    return masc.verLista_Medicamentos() 
+                
+        elif masc == "canino": 
+            for masc in self.__lista_caninos:
+                if historia == masc.verHistoria():
+                    return masc.verLista_Medicamentos()
+                
+        else: 
+            print("---------------------------")
+            print("Ingresó una opción inválida") 
+            print("---------------------------")
+            
         return None
     
     def eliminarMascota(self, historia):
-        for masc in self.__lista_mascotas:
-            if historia == masc.verHistoria():
-                self.__lista_mascotas.remove(masc)  #opcion con el pop
-                return True  #eliminado con exito
+        masc = input("Ingrese si es felino o canino: ")
+        
+        if masc == "felino":
+            for masc in self.__lista_felinos:
+                if historia == masc.verHistoria():
+                    valor_d = self.__lista_felinos.pop(historia, "No encontrado")  #opcion con el pop
+                return valor_d  #eliminado con exito
+            
+        elif masc == "caninos":
+            for masc in self.__lista_caninos:
+                if historia == masc.verHistoria():
+                    valor_d = self.__lista_caninos.pop(historia, "No encontrado")
+                return valor_d
+            
+        else:
+            print("---------------------------")
+            print("Ingresó una opción inválida")
+            print("---------------------------")
+                    
         return False 
 
 def main():
