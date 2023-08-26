@@ -51,7 +51,8 @@ class Mascota:
     
 class sistemaV:
     def __init__(self):
-        self.__lista_mascotas = []
+        self.__lista_caninos = {}
+        self.__lista_caninos = {}
     
     def verificarExiste(self,historia):
         for m in self.__lista_mascotas:
