@@ -81,7 +81,7 @@ class Medicamento:
         self.__nombre = "" 
         self.__dosis = 0 
     
-    def verNombre(self):
+    def verNombreM(self):
         return self.__nombre 
     def verDosis(self):
         return self.__dosis 
@@ -133,17 +133,17 @@ class sistemaV:
         self.__lista_caninos = {}
         self.__lista_felinos = {}
        
-    def verificarExiste(self,historia):
-        for m in self.__lista_felinos:
+    def verificarExiste(self, historia):
+        for m in self.__lista_felinos.values():
             if historia == m.verHistoria():
                 return True
-            #solo luego de haber recorrido todo el ciclo se retorna False
-        for m in self.__lista_caninos:
+
+        for m in self.__lista_caninos.values():
             if historia == m.verHistoria():
                 return True
-            #solo luego de haber recorrido todo el ciclo se retorna False
+            
         return False
-        
+
 
     def verNumeroMascotas(self):
         cantidad_de_felinos = 0
@@ -191,26 +191,28 @@ class sistemaV:
         return None
 
     def eliminarMascota(self, historia):
-        for mascota_actual in self.__lista_felinos:
-            if historia == mascota_actual:
-                valor_d = self.__lista_felinos[mascota_actual].pop(historia)  #opcion con el pop
-                return valor_d  #eliminado con exito
-            
-            else:
-                return "No encontrado"
-            
-        for mascota_actual in self.__lista_caninos:
-            if historia == mascota_actual:
-                valor_d = self.__lista_caninos[mascota_actual].pop(historia)
-                return valor_d
-            
-            else:
-                return "No encontrado"
+        if historia in self.__lista_felinos:
+            mascota_eliminada = self.__lista_felinos.pop(historia)
+            return mascota_eliminada
+        
+        elif historia in self.__lista_caninos:
+            mascota_eliminada = self.__lista_caninos.pop(historia)
+            return mascota_eliminada
+        
+        else:
+            return "No encontrado"
                     
     def eliminarMedicamento(self, historia):
-        pass
-        
+        for mascota in self.__lista_felinos.values():
+            if historia == mascota.verHistoria():
+                mascota.asignarLista_Medicamentos([])  
+                return True  # Eliminado con éxito
 
+        for mascota in self.__lista_caninos.values():
+            if historia == mascota.verHistoria():
+                mascota.asignarLista_Medicamentos([])  
+                return True  # Eliminado con éxito
+        
 def main():
     servicio_hospitalario = sistemaV()
     # sistma=sistemaV()
@@ -243,17 +245,31 @@ def main():
                 peso = validar_flotantes("Ingrese el peso de la mascota: ")
                 fecha = validar_date("Ingrese la fecha de ingreso: ")
                 nm = validar_enteros("Ingrese cantidad de medicamentos: ")
-                lista_med=[]
+                lista_med = []
 
-                for i in range(0,nm):
+                
+                for i in range(0, nm):
                     nombre_medicamentos = validar_letras("Ingrese el nombre del medicamento: ")
+
+                    med_repetido = False
+                    for medicamento in lista_med: 
+                        if nombre_medicamentos == medicamento.verNombreM():
+                            print("------------------------------------------------------------------")
+                            print("No se puede recetar el medicamento ya que ya se encuentra recetado")
+                            print("------------------------------------------------------------------")
+                            med_repetido = True
+                            break
+
+                    if med_repetido:
+                        continue
+
                     dosis = validar_enteros("Ingrese la dosis: ")
                     medicamento = Medicamento()
                     medicamento.asignarNombre(nombre_medicamentos)
                     medicamento.asignarDosis(dosis)
                     lista_med.append(medicamento)
 
-                mas= Mascota()
+                mas = Mascota()
                 mas.asignarNombre(nombre)
                 mas.asignarHistoria(historia)
                 mas.asignarPeso(peso)
@@ -261,10 +277,14 @@ def main():
                 mas.asignarFecha(fecha)
                 mas.asignarLista_Medicamentos(lista_med)
                 servicio_hospitalario.ingresarMascota(mas, historia)
-
+                
+                print("-----------------------------")
+                print("Mascota guardada exitosamente")
+                print("-----------------------------")
+            
             else:
                 print("------------------------------------------------------")
-                print("Ya existe la mascota con el numero de histoira clinica")
+                print("Ya existe la mascota con el número de historia clínica")
                 print("------------------------------------------------------")
 
         elif menu == 2: # Ver fecha de ingreso
@@ -301,7 +321,7 @@ def main():
                 
                 for m in medicamento:   
                     print("--------------------")
-                    print(f"\n- {m.verNombre()}")
+                    print(f"\n- {m.verNombreM()}")
                     print("--------------------")
                     
             else:
@@ -313,18 +333,30 @@ def main():
            
             historia = validar_enteros("Ingrese la historia clínica de la mascota: ")
             resultado_operacion = servicio_hospitalario.eliminarMascota(historia) 
-            if resultado_operacion == True:
+
+            if resultado_operacion != "No encontrado":
                 print("---------------------------------------")
-                print("Mascota eliminada del sistema con exito")
+                print("Mascota eliminada del sistema con éxito")
                 print("---------------------------------------")
-                
+            
             else:
                 print("-----------------------------------")
                 print("No se ha podido eliminar la mascota")
                 print("-----------------------------------")
-        
+                
         elif menu == 6: #eliminar medicamento
-            pass
+            historia = validar_enteros("Ingrese la historia clínica de la mascota: ")
+            resultado_operacion = servicio_hospitalario.eliminarMedicamento(historia) 
+            
+            if resultado_operacion == True:
+                print("---------------------------------------")
+                print("Medicamento eliminada del sistema con exito")
+                print("---------------------------------------")
+                
+            else:
+                print("-----------------------------------")
+                print("No se ha podido eliminar el medicamento")
+                print("-----------------------------------")
         
         elif menu == 7:
             
