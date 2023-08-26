@@ -1,0 +1,81 @@
+from datetime import datetime,date
+
+def validar_enteros(msj):
+    try:
+        data = int(input(msj))
+        return data
+    except:
+        print("--------------")
+        print("Ingrese solo números enteros. Inténtelo nuevamente")
+        print("--------------")
+        return validar_enteros(msj)
+    
+def validar_flotantes(msj):
+    try:
+        data = float(input(msj))
+        return data
+    except:
+        print("--------------")
+        print("Ingrese solo números decimales. Inténtelo nuevamente")
+        print("--------------")
+        return validar_flotantes(msj)
+    
+import re
+r2 = r'^[A-Za-z-ñÑ-áÁéÉíÍóÓúÚ  ]+$'
+patron = re.compile(r2)
+
+def validar_letras(msj):
+    
+    data = input(msj)
+    if patron.match(data):
+        return data
+    else:
+        print("----------------")
+        print("Debe ingresar solo letras y espacios en blanco")
+        print("----------------")
+        return validar_letras(msj)
+    
+def validar_date(msj):
+    while True:
+        print("A continuación ingrese la fecha en la que se realizó el estudio")
+        print("Ingrese el día: ")
+        dia = validar_enteros(msj)
+
+        print("Ingrese el mes: ")
+        mes = validar_enteros(msj)
+
+        print("Ingresar el año: ")
+        año = validar_enteros(msj)
+
+        if año < 2024:
+            if mes > 12:
+                print("----------------")
+                print("Fecha incorrecta, ingrese la fecha de nuevo")
+                print("----------------")
+
+
+            elif mes == 2 and dia < 28:
+                break 
+
+            elif mes == 1 or mes == 3 or mes == 5 or mes == 7 or mes == 8 or mes == 10 or mes == 12 and dia < 32:
+                break 
+
+            elif mes != 2 and dia < 31: 
+                break 
+
+            else: 
+                print("----------------")
+                print("Fecha incorrecta, ingrese la fecha de nuevo")
+                print("----------------")
+
+        else: 
+                print("----------------")
+                print("Fecha incorrecta, ingrese la fecha de nuevo")
+                print("----------------")
+
+
+    fecha = date(año, mes, dia)
+    print("fecha: ",fecha.strftime("%Y/%m/%d"))
+    return str(fecha)
+
+
